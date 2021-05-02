@@ -19,7 +19,7 @@ async def on_connect():
     
     bot._ext = ["cogs.mido_admins", "jishaku"]
     
-    for c in ext:
+    for c in bot._ext:
         try:
             bot.load_extension(c)
         except Exception as e:
