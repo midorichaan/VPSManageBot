@@ -17,15 +17,20 @@ async def on_ready():
 async def on_connect():
     print("on_connect!")
     
-    ext = ["cogs.mido_admins", "jishaku"]
+    bot._ext = ["cogs.mido_admins", "jishaku"]
     
     for c in ext:
         try:
             bot.load_extension(c)
         except Exception as e:
-            print(f"[Error] {e}")
+            print(f"[Error] {c} → {e}")
         else:
             print(f"{c} load.")
+
+#on_ready
+@bot.event
+async def on_ready():
+    print("[System] on_ready!")
     
 #command_log
 @bot.event
