@@ -15,6 +15,10 @@ class mido_admins(commands.Cog):
         
         self.result = None
     
+    #check func
+    async def cog_check(self, ctx):
+        return ctx.author.id in [m.id for m in ctx.bot.get_guild(701131006698192916).get_role(861832139204591626).members]
+    
     #remove ```
     def cleanup_code(self, content):
         if content.startswith('```') and content.endswith('```'):
@@ -35,7 +39,6 @@ class mido_admins(commands.Cog):
     
     #eval
     @commands.command(pass_context=True)
-    @commands.is_owner()
     async def eval(self, ctx, *, body: str):
         env = {
             'bot': self.bot,
@@ -75,7 +78,6 @@ class mido_admins(commands.Cog):
     
     #sh
     @commands.command(pass_context=True, aliases=["sh"])
-    @commands.is_owner()
     async def shell(self, ctx, *, command):
         stdout, stderr = await self.run_process(command)
         
