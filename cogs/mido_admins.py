@@ -117,6 +117,14 @@ class mido_admins(commands.Cog):
         e.add_field(name="Swap Memory Info", value=f"Total: {swap_total}GB ({swap.percent}%), Used: {swap_used}GB, Free: {swap_total - swap_used}GB", inline=False)
         e.add_field(name="Disk Info", value=f"Total: {disk_total}GB ({disk.percent}%), Used: {disk_used}GB, Free: {round(disk_total - disk_used)}GB", inline=False)
         await ctx.send(embed=e)
+    
+    #cache
+    @commands.command()
+    async def cache(self, ctx, type: int=None):
+        if type in [1, 2, 3]:
+            stdout, stderr = await self.run_process(f"sync; echo {type} > /proc/sys/vm/drop_caches")
+            
+            await ctx.send(f"> stdout \n```\n{stdout or 'None'}\n``` \n\n> stderr \n{stderr or 'None'}\n```")
         
 def setup(bot):
     bot.add_cog(mido_admins(bot))
