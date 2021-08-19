@@ -124,7 +124,7 @@ class mido_admins(commands.Cog):
         if type in [1, 2, 3]:
             stdout, stderr = await self.run_process(f"sync; echo {type} > /proc/sys/vm/drop_caches")
             
-            await ctx.send(f"> stdout \n```\n{stdout or 'None'}\n``` \n\n> stderr \n{stderr or 'None'}\n```")
+            await ctx.send(f"> stdout \n```\n{stdout or 'None'}\n``` \n\n> stderr \n```\n{stderr or 'None'}\n```")
         
 def setup(bot):
     bot.add_cog(mido_admins(bot))
