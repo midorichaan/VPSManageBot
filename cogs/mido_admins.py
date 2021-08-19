@@ -101,7 +101,7 @@ class mido_admins(commands.Cog):
         e = discord.Embed(title="Debug Info", description="")
         
         cpu = psutil.cpu_percent()
-        memory = psutil.vitual_memory()
+        memory = psutil.virtual_memory()
         swap = psutil.swap_memory()
         disk = psutil.disk_usage("/")
         
