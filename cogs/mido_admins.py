@@ -113,9 +113,9 @@ class mido_admins(commands.Cog):
         disk_total = (disk.total / 1024 / 1024 / 1024 * 200 + 1) // 2 / 100
         
         e.add_field(name="CPU Info", value=f"{cpu}%")
-        e.add_field(name="Memory Info", value=f"Total: {memory_total}GB ({memory.percent}%), Used: {memory_used}GB, Free: {memory_total - memory_used}GB", inline=False)
+        e.add_field(name="Memory Info", value=f"Total: {memory_total}GB ({memory.percent}%), Used: {memory_used}GB, Free: {round(memory_total - memory_used)}GB", inline=False)
         e.add_field(name="Swap Memory Info", value=f"Total: {swap_total}GB ({swap.percent}%), Used: {swap_used}GB, Free: {swap_total - swap_used}GB", inline=False)
-        e.add_field(name="Disk Info", value=f"Total: {disk_total}GB ({disk.percent}%), Used: {disk_used}GB, Free: {disk_total - disk_used}GB", inline=False)
+        e.add_field(name="Disk Info", value=f"Total: {disk_total}GB ({disk.percent}%), Used: {disk_used}GB, Free: {round(disk_total - disk_used)}GB", inline=False)
         await ctx.send(embed=e)
         
 def setup(bot):
