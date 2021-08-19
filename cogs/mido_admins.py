@@ -6,6 +6,8 @@ import textwrap
 import asyncio
 import subprocess
 import io
+import psutil
+
 from contextlib import redirect_stdout
 
 class mido_admins(commands.Cog):
@@ -56,14 +58,14 @@ class mido_admins(commands.Cog):
 
         try:
             exec(to_compile, env)
-        except Exception as e:
-            return await ctx.send(f"```py\n{e.__class__.__name__}: {e}\n```")
+        except Exception as exc:
+            return await ctx.send(f"```py\n{exc.__class__.__name__}: {exc}\n```")
 
         func = env['func']
         try:
             with redirect_stdout(stdout):
                 ret = await func()
-        except Exception as e:
+        except:
             value = stdout.getvalue()
             await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
         else:
@@ -90,8 +92,31 @@ class mido_admins(commands.Cog):
             ret = f"```\n{text}\n```"
             
             return await ctx.send(ret)   
-        except Exception as er:
-            return await ctx.send(embed=f"```py\n{er}\n```")
+        except Exception as exc:
+            return await ctx.send(embed=f"```py\n{exc}\n```")
     
+    #debug
+    @commands.command()
+    async def debug(self, ctx):
+        e = discord.Embed(title="Debug Info", description="")
+        
+        cpu = psutil.cpu_percent()
+        memory = psutil.vitual_memory()
+        swap = psutil.swap_memory()
+        disk = psutil.disk_usage("/")
+        
+        memory_used = (memory.used / 1024 / 1024 / 1024 * 200 + 1) // 2 / 100
+        memory_total = (memory.total / 1024 / 1024 / 1024 * 200 + 1) // 2 / 100
+        swap_used = (swap.used / 1024 / 1024 / 1024 * 200 + 1) // 2 / 100
+        swap_total = (swap.total / 1024 / 1024 / 1024 * 200 + 1) // 2 / 100
+        disk_used = (disk.used / 1024 / 1024 / 1024 * 200 + 1) // 2 / 100
+        disk_total = (disk.total / 1024 / 1024 / 1024 * 200 + 1) // 2 / 100
+        
+        e.add_field(name="CPU Info", value=f"{cpu}%")
+        e.add_field(name="Memory Info", value=f"Total: {memory_total}GB ({memory.percent}%), Used: {memory_used}GB, Free: {memory_total - memory_used}GB")
+        e.add_field(name="Swap Memory Info", value=f"Total: {swap_total}GB ({swap.percent}%), Used: {swap_used}GB, Free: {swap_total - swap_used}GB")
+        e.add_field(name="Disk Info", value=f"Total: {disk_total}GB ({disk.percent}%), Used: {disk_used}GB, Free: {disk_total - disk_used}GB")
+        await ctx.send(embed=e)
+        
 def setup(bot):
     bot.add_cog(mido_admins(bot))
